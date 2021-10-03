@@ -24,9 +24,9 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")
 opts = webdriver.ChromeOptions()
 opts.headless =True
-#driver = webdriver.Chrome(options=opts)    
-driver = webdriver.Chrome(executable_path= r'C:\Users\Saad\.wdm\drivers\chromedriver\win32\94.0.4606.61\chromedriver.exe',
-                         options=opts)
+driver = webdriver.Chrome(executable_path = ChromeDriverManager().install(), options=opts)    
+#driver = webdriver.Chrome(executable_path= r'C:\Users\Saad\.wdm\drivers\chromedriver\win32\94.0.4606.61\chromedriver.exe',
+ #                        options=opts)
 
 logging.debug('Chrome driver executed succesfully.')
 def get_bestseller_links():
@@ -58,8 +58,8 @@ def get_bestseller_links():
         bestseller_links = re.findall('"/Best-Sellers-\s*(.*?)\s*"', str(links))
         bestseller_links_series = 'https://www.amazon.com/' + pd.Series(bestseller_links)
         #print(bestseller_links_series)
-        return(bestseller_links_series)
         logging.debug('Scraped Succesfully.')
+        return(bestseller_links_series)
 
 
 def parsing_to_df_function(item):
@@ -69,9 +69,10 @@ def parsing_to_df_function(item):
         driver.get(f'{item}')
         pageSource = driver.page_source
         soup = BeautifulSoup(pageSource, 'html.parser')
+        logging.debug('Extract source code.')
 
         #Titles
-
+        logging.debug('Parsing source code for titles.')
         titles = soup.findAll('div', {'class': 'a-section a-spacing-small'})
         pattern = "img alt=\'\\s*(.*?)\\s*\'|img alt=\"\\s*(.*?)\\s*\""
         titles_list = []
@@ -82,6 +83,7 @@ def parsing_to_df_function(item):
         title_series = title_series.astype('str').str.replace('[\[\]\'\(\,\'\"\)]','').str.strip()
 
         # Reviews
+        logging.debug('Parsing source code for reviews.')
 
         stars = soup.findAll('span', {'class': 'aok-inline-block zg-item'})
         star_list = []
@@ -91,6 +93,7 @@ def parsing_to_df_function(item):
         star_series = pd.Series(star_list, name='Star')   
 
         #Price
+        logging.debug('Parsing source for prices.')
 
         price = soup.findAll('span', {'class': 'aok-inline-block zg-item'})
         price_list = []
@@ -100,6 +103,8 @@ def parsing_to_df_function(item):
 
         price_series = pd.Series(price_list)
         price_series = price_series.astype('str').str.replace('[\[\]\']','').str.strip()
+  
+        logging.debug('Combining series into DataFrame.')
 
         df = pd.DataFrame({'Title':title_series,'Stars':star_series,'Price':price_series})
         df.Stars = df.Stars.astype('str').str.replace('[\[\]\']','').str.strip().replace(r'^\s*$', 'Unknown', regex=True)
