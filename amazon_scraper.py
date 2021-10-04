@@ -102,7 +102,7 @@ def parsing_to_df_function(item):
             price_list.append(function_price)
 
         price_series = pd.Series(price_list)
-        price_series = price_series.astype('str').str.replace('[\[\]\']','').str.strip()
+        price_series = price_series.astype('str').str.replace('[\[\]\']','').str.replace(r'^\s*$', 'Unknown', regex=True).str.strip()
   
         logging.debug('Combining series into DataFrame.')
 
