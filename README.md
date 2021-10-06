@@ -38,3 +38,7 @@ Once the dependencies are packages, we can get the data using the custom scrape 
 ### Q3: PostGres Task 
 
 You can find the PostGres server notebook [here](https://github.com/Saadkhansolo/amazon_scraping_project/blob/master/PostGres%20Task.ipynb)
+
+### Q4: Moving from source to target database using multicolumn primary key:
+
+Source to target mapping can be using migration wizard. If the source data does not have a column with unique values, concatenate the values from multiple columns to form unique primary keys.
