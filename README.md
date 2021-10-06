@@ -35,3 +35,6 @@ Once the dependencies are packages, we can get the data using the custom scrape 
 
     s3.Bucket(BUCKET_NAME).put_object(Key=FILE_NAME, Body=data)
 
+### Q3: PostGres Task 
+
+You can find the PostGres server notebook [here](https://github.com/Saadkhansolo/amazon_scraping_project/blob/master/PostGres%20Task.ipynb)
