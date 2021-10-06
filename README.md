@@ -41,4 +41,4 @@ You can find the PostGres server notebook [here](https://github.com/Saadkhansolo
 
 ### Q4: Moving from source to target database using multicolumn primary key:
 
-Source to target mapping can be using migration wizard. If the source data does not have a column with unique values, concatenate the values from multiple columns to form unique primary keys.
+Source to target mapping can be done using migration wizard. If the source data does not have a column with unique values, concatenate the values from multiple columns to form unique primary keys.
